@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Planning App</title>
+    <style>
+        body {
+            background: url('https://www.w3schools.com/w3images/mountains.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: blue; /* Font color set to blue */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        h1 {
+            animation: fadeInDown 1.5s;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section {
+            display: none;
+        }
+
+        .active-section {
+            display: block;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background: #0077B6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px;
+        }
+
+        .button:hover {
+            background: #005f7f;
+        }
+
+        .avatar {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border: 4px solid #fff;
+        }
+
+        .avatar-container {
+            margin: 20px auto;
+        }
+
+        .avatar-label {
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .goal-list {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background: #f3f3f3;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background: #4CAF50;
+            border-radius: 10px;
+            width: 0;
+        }
+
+        .progress-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .news-ticker {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .news-ticker p {
+            display: inline-block;
+            animation: scroll 15s linear infinite;
+        }
+
+        @keyframes scroll {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
+
+        .notes-section {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .notes-textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .predefined-avatar-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .predefined-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 10px;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+
+        .predefined-avatar:hover {
+            border-color: #0077B6;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page 1: Welcome and About Us -->
+        <div class="section active-section" id="welcome-section">
+            <h1>Welcome to Financial Planning App!</h1>
+            <p>Your personal financial assistant that helps you set and achieve your financial goals!</p>
+            <button class="button" onclick="showCreateAccount()">Get Started</button>
+            <hr>
+            <h2>About Us</h2>
+            <p>We are a team of financial experts who want to make personal finance simple and accessible for everyone. Our goal is to provide you with the tools and guidance needed to take control of your financial future.</p>
+        </div>
+
+        <!-- Page 2: Create Account -->
+        <div class="section" id="create-account-section">
+            <h1>Create Your Account</h1>
+            <input type="text" id="new-username" placeholder="Enter Username">
+            <input type="password" id="new-password" placeholder="Enter Password">
+            <button class="button" onclick="createAccount()">Create Account</button>
+        </div>
+
+        <!-- Page 3: Profile and Goals -->
+        <div class="section" id="profile-goals-section">
+            <h1>Your Profile</h1>
+            <div class="avatar-container">
+                <img id="profile-avatar" class="avatar" src="https://via.placeholder.com/120" alt="Profile Avatar">
+                <br>
+                <label class="avatar-label">Choose or Change Avatar</label>
+                <div class="predefined-avatar-container">
+                    <img src="https://via.placeholder.com/120/FF5733" class="predefined-avatar" onclick="chooseAvatar('https://via.placeholder.com/120/FF5733')">
+                    <img src="https://via.placeholder.com/120/33FF57" class="predefined-avatar" onclick="chooseAvatar('https://via.placeholder.com/120/33FF57')">
+                    <img src="https://via.placeholder.com/120/3357FF" class="predefined-avatar" onclick="chooseAvatar('https://via.placeholder.com/120/3357FF')">
+                </div>
+                <input type="file" id="avatar-input" accept="image/*" onchange="changeAvatar()" style="margin-top: 10px;">
+            </div>
+            <p><strong>Name:</strong> John Doe</p>
+            <p><strong>Age:</strong> 30</p>
+            <p><strong>Income:</strong> $70,000/year</p>
+
+            <h2>Set Your Financial Goals</h2>
+            <input type="text" id="goal-input" placeholder="Enter a financial goal">
+            <button class="button" onclick="addGoal()">Add Goal</button>
+            <ul id="goal-list" class="goal-list">
+                <!-- User goals will appear here -->
+            </ul>
+
+            <button class="button" onclick="showProgressTracker()">Next: Goal Progress Tracker</button>
+        </div>
+
+        <!-- Page 4: Progress Tracker -->
+        <div class="section" id="progress-tracker-section">
+            <h1>Goal Progress Tracker</h1>
+            <div class="goal">
+                <h3>Save for Emergency Fund</h3>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 60%;">
+                        <div class="progress-text">60%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="goal">
+                <h3>Buy a House</h3>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 30%;">
+                        <div class="progress-text">30%</div>
+                    </div>
+                </div>
+            </div>
+            <button class="button" onclick="showBudgetPlanner()">Next: Budget Planner</button>
+        </div>
+
+        <!-- Page 5: Budget Planner and Chatbot -->
+        <div class="section" id="budget-chatbot-section">
+            <h1>Budget Planner</h1>
+            <p>Here you can plan your monthly budget...</p>
+
+            <div class="notes-section">
+                <h3>Notes for your Budget Plan</h3>
+                <textarea class="notes-textarea" id="notes-input" placeholder="Add your notes here..."></textarea>
+            </div>
+
+            <div id="chatbot-section">
+                <h3>Chat with Us</h3>
+                <div id="chat-box"></div>
+                <input type="text" id="user-message" placeholder="Type your message..." onkeypress="if(event.keyCode == 13) sendMessage()">
+            </div>
+
+            <button class="button" onclick="showNewsArticles()">Next: Latest News</button>
+        </div>
+
+        <!-- Page 6: News Articles -->
+        <div class="section" id="news-section">
+            <h1>Latest Finance News</h1>
+            <div class="news-ticker">
+                <p>📈 Latest Finance News: Stock markets rise 2%... | 📉 Inflation rate drops... | 💰 New tax-saving schemes available! | 🚀 Crypto surges to new highs!</p>
+            </div>
+
+            <div>
+                <h3>Recent Articles</h3>
+                <ul>
+                    <li><a href="https://www.investopedia.com/what-are-financial-goals-5183832" target="_blank">What Are Financial Goals? - Investopedia</a></li>
+                    <li><a href="https://www.money.com/7-steps-financial-goal-setting/" target="_blank">7 Steps for Financial Goal Setting - Money.com</a></li>
+                    <li><a href="https://www.cnbc.com/finance/" target="_blank">Finance News - CNBC</a></li>
+                    <li><a href="https://www.forbes.com/finance/" target="_blank">Latest Finance News - Forbes</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let accounts = {};
+        let goals = [];
+
+        // Show the "Create Account" page
+        function showCreateAccount() {
+            switchSection('create-account-section');
+        }
+
+        // Show the "Profile and Goals" page
+        function showProfileAndGoals() {
+            switchSection('profile-goals-section');
+        }
+
+        // Show the "Progress Tracker" page
+        function showProgressTracker() {
+            switchSection('progress-tracker-section');
+        }
+
+        // Show the "Budget and Chatbot" page
+        function showBudgetPlanner() {
+            switchSection('budget-chatbot-section');
+        }
+
+        // Show the "News Articles" page
+        function showNewsArticles() {
+            switchSection('news-section');
+        }
+
+        // Switch to the specified section
+        function switchSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active-section');
+            });
+            document.getElementById(sectionId).classList.add('active-section');
+        }
+
+        // Create a new account
+        function createAccount() {
+            const username = document.getElementById('new-username').value;
+            const password = document.getElementById('new-password').value;
+
+            if (username && password) {
+                accounts[username] = password;
+                alert('Account created successfully');
+                showProfileAndGoals();
+            }
+        }
+
+        // Change avatar image
+        function changeAvatar() {
+            const file = document.getElementById('avatar-input').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('profile-avatar').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Choose a predefined avatar
+        function chooseAvatar(imageSrc) {
+            document.getElementById('profile-avatar').src = imageSrc;
+        }
+
+        // Add a goal
+        function addGoal() {
+            const goalInput = document.getElementById('goal-input');
+            if (goalInput.value) {
+                goals.push(goalInput.value);
+                const goalList = document.getElementById('goal-list');
+                const newGoal = document.createElement('li');
+                newGoal.innerText = goalInput.value;
+                goalList.appendChild(newGoal);
+                goalInput.value = '';
+            }
+        }
+    </script>
+</body>
+</html>
